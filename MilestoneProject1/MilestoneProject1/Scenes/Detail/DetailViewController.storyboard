@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="JzS-DY-Wd3">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Detail View Controller-->
+        <scene sceneID="jqm-wl-r4A">
+            <objects>
+                <viewController id="JzS-DY-Wd3" customClass="DetailViewController" customModule="MilestoneProject1" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mn0-Il-bTE">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5ff-y9-tTg">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="5ff-y9-tTg" firstAttribute="leading" secondItem="0QU-4t-lb9" secondAttribute="leading" id="B3r-lD-Pgw"/>
+                            <constraint firstItem="5ff-y9-tTg" firstAttribute="top" secondItem="mn0-Il-bTE" secondAttribute="top" id="LSd-bV-fq3"/>
+                            <constraint firstAttribute="bottom" secondItem="5ff-y9-tTg" secondAttribute="bottom" id="nIJ-UV-lc2"/>
+                            <constraint firstItem="5ff-y9-tTg" firstAttribute="trailing" secondItem="0QU-4t-lb9" secondAttribute="trailing" id="xbX-2g-zMX"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="0QU-4t-lb9"/>
+                    </view>
+                    <connections>
+                        <outlet property="flagImage" destination="5ff-y9-tTg" id="CBj-5N-yWR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aan-KM-GsC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-201.44927536231884" y="40.848214285714285"/>
+        </scene>
+    </scenes>
+</document>
