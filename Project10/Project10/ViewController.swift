@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     var people = [Person]()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -40,29 +40,55 @@ class ViewController: UICollectionViewController, UINavigationControllerDelegate
         
         return cell
     }
-
+    
     @objc func addNewPerson() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let ac = UIAlertController(title: "Source", message: nil, preferredStyle: .actionSheet)
+            ac.addAction(UIAlertAction(title: "Camera", style: .default, handler: {
+                [weak self] _ in
+                self?.showPicker(camera: true)
+            }))
+            ac.addAction(UIAlertAction(title: "Library", style: .default, handler: {
+                [weak self] _ in
+                self?.showPicker(camera: false)
+            }))
+            ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            present(ac, animated: true)
+        } else {
+            showPicker(camera: false)
+        }
+    }
+    
+    func showPicker(camera: Bool) {
         let picker = UIImagePickerController()
-        picker.allowsEditing = true
         picker.delegate = self
+        picker.allowsEditing = true
+        if camera {
+            picker.sourceType = .camera
+        }
         present(picker, animated: true)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[.editedImage] as? UIImage else { return }
         
-        let imageName = UUID().uuidString
-        let imagePath = getDocumentsDirectory().appendingPathComponent(imageName)
-        
-        if let jpegData = image.jpegData(compressionQuality: 0.8) {
-            try? jpegData.write(to: imagePath)
+        DispatchQueue.global().async { [weak self] in
+            guard let `self` = self else { return }
+            let imageName = UUID().uuidString
+            let imagePath = self.getDocumentsDirectory().appendingPathComponent(imageName)
+            
+            if let jpegData = image.jpegData(compressionQuality: 0.8) {
+                try? jpegData.write(to: imagePath)
+            }
+            
+            let person = Person(name: "Unknown", image: imageName)
+            self.people.append(person)
+            
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+                self.dismiss(animated: true)
+            }
         }
-        
-        let person = Person(name: "Unknown", image: imageName)
-        people.append(person)
-        collectionView.reloadData()
-        
-        dismiss(animated: true)
     }
     
     func getDocumentsDirectory() -> URL {
@@ -72,15 +98,23 @@ class ViewController: UICollectionViewController, UINavigationControllerDelegate
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let person = people[indexPath.item]
-        let ac = UIAlertController(title: "Rename Person", message: nil, preferredStyle: .alert)
-        ac.addTextField()
-        ac.addAction(UIAlertAction(title: "Ok", style: .default) { [weak self, weak ac] _ in
-            guard let newName = ac?.textFields?[0].text else { return }
-            person.name = newName
-            self?.collectionView.reloadData()
+        let firstAC = UIAlertController(title: "Editing \(person.name)", message: "Do you want to delete item or rename it?", preferredStyle: .alert)
+        firstAC.addAction(UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            self?.people.remove(at: indexPath.item)
+            collectionView.reloadData()
         })
-        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        present(ac, animated: true)
+        firstAC.addAction(UIAlertAction(title: "Rename", style: .default) { [weak self] _ in
+            let ac = UIAlertController(title: "Rename Person", message: nil, preferredStyle: .alert)
+            ac.addTextField()
+            ac.addAction(UIAlertAction(title: "Ok", style: .default) { [weak self, weak ac] _ in
+                guard let newName = ac?.textFields?[0].text else { return }
+                person.name = newName
+                self?.collectionView.reloadData()
+            })
+            ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            self?.present(ac, animated: true)
+        })
+        present(firstAC, animated: true)
     }
 }
 
