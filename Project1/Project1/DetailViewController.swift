@@ -10,6 +10,7 @@ import UIKit
 
 class DetailViewController: UIViewController {
     @IBOutlet var imageView: UIImageView!
+    
     var selectedImage: String?
     var countSelect: Int?
     var countTotal: Int?
@@ -36,7 +37,7 @@ class DetailViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+        super.viewWillDisappear(animated)
         navigationController?.hidesBarsOnTap = false
     }
 

@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     var webView: WKWebView!
     var progressView: UIProgressView!
     var websites = [String]()
+    var website: String?
     
     override func loadView() {
         webView = WKWebView()
@@ -47,7 +48,11 @@ class ViewController: UIViewController {
         
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
         
-        let url = URL(string: "https://" + websites[1])!
+        guard let website = website else {
+            return
+        }
+        
+        let url = URL(string: "https://" + website)!
         webView.load(URLRequest(url: url))
         webView.allowsBackForwardNavigationGestures = true
     }

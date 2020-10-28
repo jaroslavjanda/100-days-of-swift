@@ -29,7 +29,7 @@ class MainViewController: UIViewController {
             countries.append(Country(name: country, image: UIImage(named: country) === nil ? nil : UIImage(named: country)! ))
         }
         
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
     
         tableView.delegate = self
         tableView.dataSource = self

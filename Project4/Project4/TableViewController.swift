@@ -32,11 +32,12 @@ class TableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let storyboard = storyboard?.instantiateViewController(identifier: "WebView") as? ViewController else {
+        guard let vc = storyboard?.instantiateViewController(identifier: "WebView") as? ViewController else {
             return
         }
-        storyboard.websites = websites
-        navigationController?.pushViewController(storyboard, animated: true)
+        vc.websites = websites
+        vc.website = websites[indexPath.row]
+        navigationController?.pushViewController(vc, animated: true)
     }
 
 }
